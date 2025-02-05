@@ -1,4 +1,5 @@
 import {v2 as cloudinary} from 'cloudinary';
+import exp from 'constants';
 import fs from 'fs';
 
 cloudinary.config({
@@ -13,12 +14,16 @@ const uploadOnCloudinary = async (localFilePath) => {
 
         const responce = await cloudinary.uploader.upload(localFilePath, {
             resource_type: 'auto',
+            folder: 'auction',
         })
 
         fs.unlinkSync(localFilePath);
         return responce;
     } catch (error) {
         fs.unlinkSync(localFilePath);
+        console.log("cloudinary error "+error);
         return null;
     }
 }
+
+export {uploadOnCloudinary};
