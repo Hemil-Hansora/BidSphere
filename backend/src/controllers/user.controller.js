@@ -16,8 +16,7 @@ const generateAccessAndRefereshToken = async (userId) => {
     
     const accessToken = user.generateAccessToken();
     const refereshToken = user.generateRefreshToken();
-    console.log(refereshToken)
-    console.log(accessToken)
+    
     user.refreshToken = refereshToken;
     await user.save({ validateBeforeSave: false });
 
@@ -142,4 +141,60 @@ const registerUser = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser };
+
+const loginUser = asyncHandler(async (req,res)=>{
+    const {email,password} = req.body
+
+    if(!email || !password){
+        throw new ApiError(400,"Please fill the details")
+    }
+
+    const user = await User.findOne({email})
+
+    if(!user){
+        throw new ApiError(400 , " Invalid Credentials")
+    }
+
+    const isPasswordVaild = user.isPasswordCorrect(password)
+
+    if(!isPasswordVaild){
+        throw new ApiError(400, "Invalid Credentials")
+    }
+
+    const { refereshToken, accessToken } = await generateAccessAndRefereshToken(
+        user._id
+    );
+
+    const loggedInUser = await User.findById(user._id).select(
+        "-password -refereshToken"
+    );
+
+    const option = {
+        httpOnly: true,
+        secure: true,
+    };
+
+    return res
+        .status(200)
+        .cookie("accessToken", accessToken, option)
+        .cookie("refreshToken", refereshToken, option)
+        .json(
+            new ApiResponse(
+                200,
+                {
+                    user: loggedInUser,
+                    accessToken,
+                    refereshToken,
+                },
+                "User logged in successfully"
+            )
+        );
+})
+
+const getprofile = asyncHandler(async (req,res)=>{})
+
+const logout = asyncHandler(async (req,res)=>{})
+
+const fetchLeaderboard = asyncHandler(async (req,res)=>{})
+
+export { registerUser,getprofile,loginUser,logout,fetchLeaderboard };
