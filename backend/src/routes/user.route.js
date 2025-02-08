@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { fetchLeaderboard, getprofile, loginUser, logout, registerUser} from "../controllers/user.controller.js"
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -10,9 +11,10 @@ router.route("/register").post(
 );
 
 router.route("/login").post(loginUser)
+router.use(verifyJWT);
 router.route("/").get(getprofile)
 router.route("/logout").get(logout)
-router.route("leaderboard").get(fetchLeaderboard)
+router.route("/leaderboard").get(fetchLeaderboard)
 
 
 

@@ -33,3 +33,12 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         }
     );
 });
+
+export const isAuthorized = (...roles) => {
+    return asyncHandler( (req, _, next) => {
+        if (!roles.includes(req.user.role)) {
+            throw new ApiError(403, `${req.user.role} are not authorized to access this route`);
+        }
+        next();
+    });
+}
