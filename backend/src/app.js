@@ -19,12 +19,14 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 import userRouter from "./routes/user.route.js";
+import bidRouter from "./routes/bid.route.js";
 import auctionRouter from './routes/auction.route.js'
 
 
 
 app.use("/api/v1/users",userRouter);
 app.use('/api/v1/auction',auctionRouter)
+app.use("/api/v1/bid",bidRouter)
 
 
 
