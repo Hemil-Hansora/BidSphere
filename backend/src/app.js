@@ -22,11 +22,14 @@ import userRouter from "./routes/user.route.js";
 import bidRouter from "./routes/bid.route.js";
 import auctionRouter from "./routes/auction.route.js";
 import commissionRouter from "./routes/commission.route.js";
+import adminRouter from "./routes/admin.route.js"
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auction", auctionRouter);
 app.use("/api/v1/bid", bidRouter);
 app.use('/api/v1/commision',commissionRouter);
+app.use("/api/v1/admin",adminRouter)
+
 
 app.use(errorMiddleware);
 export { app };
