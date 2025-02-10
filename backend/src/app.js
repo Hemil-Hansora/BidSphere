@@ -6,10 +6,10 @@ import { errorMiddleware } from "./middlewares/error.middleware.js";
 const app = express();
 
 app.use(
-   cors({
-      origin: process.env.CORS_ORIGIN,
-      credentials: true,
-   })
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
 );
 
 app.use(express.json({ limit: "16kb" }));
@@ -20,17 +20,13 @@ app.use(cookieParser());
 
 import userRouter from "./routes/user.route.js";
 import bidRouter from "./routes/bid.route.js";
-import auctionRouter from './routes/auction.route.js'
+import auctionRouter from "./routes/auction.route.js";
+import commissionRouter from "./routes/commission.route.js";
 
-
-
-app.use("/api/v1/users",userRouter);
-app.use('/api/v1/auction',auctionRouter)
-app.use("/api/v1/bid",bidRouter)
-
-
-
-
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/auction", auctionRouter);
+app.use("/api/v1/bid", bidRouter);
+app.use('/api/v1/commision',commissionRouter);
 
 app.use(errorMiddleware);
 export { app };
