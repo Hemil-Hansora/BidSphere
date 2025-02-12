@@ -9,7 +9,7 @@ router
   .route("/proof")
   .post(
     verifyJWT,
-    isAuthorized("actioneer"),
+    isAuthorized("auctioneer"),
     upload.single("proof"),
     proofOfCommission
   );

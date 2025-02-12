@@ -12,16 +12,16 @@ router.route('/').get(getAllItems)
 
 router.use(verifyJWT);
 router.route('/create-auction').post(
-    isAuthorized("actioneer"),
+    isAuthorized("auctioneer"),
     trackCommissionStatus,
     upload.single('image'),
     createAuction
 )
 
 router.route('/:id').get(getAuctionDetails)
-router.route('/delete/:id').delete(isAuthorized("actioneer"),removeFromAuction)
-router.route('/item/republish/:id').put(isAuthorized("actioneer"),republishItem)
-router.route('/items/my-items').get(isAuthorized("actioneer"),getMyAuctionItems)
+router.route('/delete/:id').delete(isAuthorized("auctioneer"),removeFromAuction)
+router.route('/item/republish/:id').put(isAuthorized("auctioneer"),republishItem)
+router.route('/items/my-items').get(isAuthorized("auctioneer"),getMyAuctionItems)
 
 
 

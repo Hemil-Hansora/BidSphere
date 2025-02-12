@@ -1,3 +1,5 @@
+import { isValidObjectId } from "mongoose";
+import { Auction } from "../models/auction.model.js";
 import { PaymentProof } from "../models/paymentProof.model.js";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/apiError.js";
@@ -5,8 +7,20 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
-const proofOfCommission = asyncHandler(async (req, res) => {
+const calculateCommission = async (auctionId) => {
+  if (!isValidObjectId(auctionId)) {
+    throw new ApiError(400, "Invalid Auction id formate");
+  }
 
+  const auction = await Auction.findById(auctionId);
+  const commissionRate = 0.07;
+  const commission = auction.currentBid * commissionRate;
+
+  return commission;
+};
+
+
+const proofOfCommission = asyncHandler(async (req, res) => {
   if (!req.file) {
     throw new ApiError(400, "Payment proof screenshot require");
   }
@@ -25,16 +39,16 @@ const proofOfCommission = asyncHandler(async (req, res) => {
   }
   const user = await User.findById(req.user?._id);
 
-  if (user.unpaidCommition === 0) {
+  if (user.unpaidCommission === 0) {
     return res
       .status(200)
       .json(new ApiResponse(200, {}, "You don't have any unpaid commision"));
   }
 
-  if (user.unpaidCommition < amount) {
+  if (user.unpaidCommission < amount) {
     throw new ApiError(
       403,
-      `The amont exceeds your unpaid commission balance. Please enter an amount up to ${user.unpaidCommition} `
+      `The amont exceeds your unpaid commission balance. Please enter an amount up to ${user.unpaidCommission} `
     );
   }
 
@@ -68,4 +82,4 @@ const proofOfCommission = asyncHandler(async (req, res) => {
     );
 });
 
-export { proofOfCommission };
+export { proofOfCommission, calculateCommission };

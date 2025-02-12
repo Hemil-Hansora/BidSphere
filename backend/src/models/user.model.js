@@ -38,7 +38,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin", "actioneer"],
+      enum: ["user", "admin", "auctioneer"],
       default: "user",
     },
     paymentMethods: {
@@ -51,7 +51,7 @@ const userSchema = new Schema(
         paypalEmail: String,
       },
     },
-    unpaidCommition: {
+    unpaidCommission: {
       type: Number,
       default: 0,
     },

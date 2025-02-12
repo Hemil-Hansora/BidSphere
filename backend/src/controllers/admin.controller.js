@@ -152,7 +152,7 @@ const fetchAllUser = asyncHandler(async (req, res) => {
   ]);
 
   const user = users.filter((u) => u.role === "user");
-  const auctioneers = users.filter((u) => u.role === "actioneer");
+  const auctioneers = users.filter((u) => u.role === "auctioneer");
 
   const transformDataToMonthlyArray = (data, totalMonth = 12) => {
     const result = Array(totalMonth).fill(0);
