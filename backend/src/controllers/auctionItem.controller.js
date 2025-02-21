@@ -5,6 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { isValidObjectId } from "mongoose";
+import { Bid } from "../models/bid.model.js";
 
 const createAuction = asyncHandler(async (req, res) => {
   if (!req.file || Object.keys(req.file).length === 0) {
@@ -156,7 +157,7 @@ const republishItem = asyncHandler(async (req, res) => {
     throw new ApiError(403, "You are not authorized to delete this auction");
   }
 
-  if (new Date(auction.endTime) >  Date.now()) {
+  if (new Date(auction.endTime) > Date.now()) {
     throw new ApiError(400, "Auction is still active");
   }
   const { startTime, endTime } = req.body;
@@ -169,31 +170,49 @@ const republishItem = asyncHandler(async (req, res) => {
   if (new Date(startTime + " GMT+0530") >= new Date(endTime + " GMT+0530")) {
     throw new ApiError(400, "Start time should be less than end time");
   }
+
+  if (auction.highestBidder) {
+    const highestBidder = await User.findByIdAndUpdate(
+      auction.highestBidder,
+      {
+        $inc: {
+          moneySpent: -auction.currentBid,
+          auctionWon: -1,
+        },
+      },
+      { new: true }
+    );
+  }
+
   const updated = await Auction.findByIdAndUpdate(
     auction._id,
     {
       $set: {
         startTime: new Date(startTime + " GMT+0530"),
         endTime: new Date(endTime + " GMT+0530"),
-        bids : [],
-        commissionCalculated : false
+        bids: [],
+        commissionCalculated: false,
+        currentBid: 0,
+        highestBidder: null,
       },
     },
     { new: true }
   );
 
+  await Bid.deleteMany({ auctionItem: auction._id });
 
   if (!updated) {
     throw new ApiError(500, "Failed to update auction");
   }
 
-  const createBy = await User.findByIdAndUpdate(updated?.createdBy,
+  const createBy = await User.findByIdAndUpdate(
+    updated?.createdBy,
     {
-      $set : {
-        unpaidCommition : 0
-      }
+      $set: {
+        unpaidCommition: 0,
+      },
     },
-    {new : true}
+    { new: true }
   );
 
   return res
