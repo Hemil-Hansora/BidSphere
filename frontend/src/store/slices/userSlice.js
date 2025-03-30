@@ -21,7 +21,7 @@ const userSlice = createSlice({
     registerSuccess(state, action) {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+      state.user = action.payload.data.user;
     },
     registerFailed(state, action) {
       state.loading = false;
@@ -37,9 +37,25 @@ const userSlice = createSlice({
     loginSuccess(state, action) {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
+      state.user = action.payload.data.user;
     },
     loginFailed(state, action) {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = {};
+    },
+
+    fetchUserRequest(state, action) {
+      state.loading = true;
+      state.isAuthenticated = false;
+      state.user = {};
+    },
+    fetchUserSuccess(state, action) {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.data;
+    },
+    fetchUserFailed(state, action) {
       state.loading = false;
       state.isAuthenticated = false;
       state.user = {};
@@ -49,7 +65,7 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.user = {};
     },
-    logoutFaild(state, action) {
+    logoutFailed(state, action) {
       state.loading = false;
       state.isAuthenticated = state.isAuthenticated;
       state.user = state.user;
@@ -71,7 +87,7 @@ export const logout = () => async (dispatch) => {
     dispatch(userSlice.actions.logoutSuccess());
     toast.success(response.data.message);
   } catch (error) {
-    dispatch(userSlice.actions.logoutFaild());
+    dispatch(userSlice.actions.logoutFailed());
     toast.error(error.response.data.message);
   } finally {
     dispatch(userSlice.actions.clearAllErrors());
@@ -102,6 +118,7 @@ export const login = (data) => async (dispatch) => {
       withCredentials: true,
       headers: { "Content-Type": "application/json" },
     });
+    console.log(response.data);
     dispatch(userSlice.actions.loginSuccess(response.data));
     toast.success(response.data.message);
   } catch (error) {
@@ -112,4 +129,18 @@ export const login = (data) => async (dispatch) => {
   }
 };
 
+export const fetchUser = () => async (dispatch) => {
+  dispatch(userSlice.actions.fetchUserRequest());
+  try {
+    const response = await axios.get(`${server}/users`, {
+      withCredentials: true,
+    });
+    dispatch(userSlice.actions.fetchUserSuccess(response.data));
+  } catch (error) {
+    dispatch(userSlice.actions.fetchUserFailed());
+    console.error(error);
+  } finally {
+    dispatch(userSlice.actions.clearAllErrors());
+  }
+};
 export default userSlice.reducer;

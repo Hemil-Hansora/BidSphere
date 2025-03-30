@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { RiAuctionFill } from "react-icons/ri";
 import { MdLeaderboard, MdDashboard } from "react-icons/md";
 import { SiGooglesearchconsole } from "react-icons/si";
@@ -19,7 +19,9 @@ const SideDrawer = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const dispatch = useDispatch(logout);
 
-  const handleLogout = () => {
+
+
+  const handleLogout = () => {  
     dispatch(logout());
   };
 
@@ -62,6 +64,9 @@ const SideDrawer = () => {
                 <MdLeaderboard /> Leaderboard
               </Link>
             </li>
+            {console.log(isAuthenticated)}
+            {console.log(user)}
+            {console.log(user?.role)}
 
             {isAuthenticated && user && user.role === "auctioneer" && (
               <>
@@ -79,7 +84,7 @@ const SideDrawer = () => {
                     to={"/create-auction"}
                     className="flex text-xl font-semibold gap-2 items-center hover:text-[#d6482b] hover:transition-all hover:duration-150"
                   >
-                    <FaFileInvoiceDollar /> Create Auction
+                    <IoIosCreate /> Create Auction
                   </Link>
                 </li>
 

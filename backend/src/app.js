@@ -27,7 +27,7 @@ import adminRouter from "./routes/admin.route.js"
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auction", auctionRouter);
 app.use("/api/v1/bid", bidRouter);
-app.use('/api/v1/commision',commissionRouter);
+app.use('/api/v1/commission',commissionRouter);
 app.use("/api/v1/admin",adminRouter)
 
 
