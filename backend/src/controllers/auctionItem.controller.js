@@ -25,12 +25,13 @@ const createAuction = asyncHandler(async (req, res) => {
     title,
     description,
     startingBid,
-    catagoery,
+    category: category,
     startTime,
     endTime,
     condition,
   } = req.body;
-  // console.log(imageLocalPath);
+
+
   if (
     !title ||
     !description ||
@@ -38,7 +39,7 @@ const createAuction = asyncHandler(async (req, res) => {
     !startTime ||
     !endTime ||
     !condition ||
-    !catagoery
+    !category
   ) {
     throw new ApiError(400, "Please provide all required fields");
   }
@@ -77,7 +78,7 @@ const createAuction = asyncHandler(async (req, res) => {
     title,
     description,
     startingBid,
-    catagoery,
+    category: category,
     startTime: new Date(startTime + " GMT+0530"),
     endTime: new Date(endTime + " GMT+0530"),
     condition,

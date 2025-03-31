@@ -14,6 +14,7 @@ import { getAllAuctionItems } from "./store/slices/auctionSlice.js";
 import Leaderboard from "./pages/LeaderBoard.jsx";
 import Auction from "./pages/Auction.jsx";
 import AuctionItem from "./pages/AuctionItem.jsx";
+import CreateAuction from "./pages/CreateAuction.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,8 @@ const App = () => {
         <Route path="/leaderboard" element = {<Leaderboard/>} />
         <Route path="/auctions" element = {<Auction/>} />
         <Route path="/auction/item/:id" element = {<AuctionItem/>} />
+        <Route path="/create-auction" element = {<CreateAuction/>} />
+
 
 
 

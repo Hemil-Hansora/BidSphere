@@ -13,7 +13,7 @@ const auctionSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    catagoery: {
+    category: {
         type: String,
         required: true,
     },
