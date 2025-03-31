@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import FeaturedAuctions from "./home-sub-components/FeaturenAuction.jsx";
+import FeaturedAuctions from "./home-sub-components/FeaturedAuction.jsx";
 import UpcomingAuctions from "./home-sub-components/UpcomingAuction.jsx";
 import Leaderboard from "./home-sub-components/Leaderboard.jsx";
 

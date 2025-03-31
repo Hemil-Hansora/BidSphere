@@ -9,12 +9,12 @@ router.route("/register").post(
     upload.single("profilePicture"),
     registerUser
 );
-
+router.route("/leaderboard").get(fetchLeaderboard)
 router.route("/login").post(loginUser)
 router.use(verifyJWT);
 router.route("/").get(getprofile)
 router.route("/logout").get(logout)
-router.route("/leaderboard").get(fetchLeaderboard)
+
 
 
 

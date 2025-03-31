@@ -7,14 +7,20 @@ import SignUp from "./pages/SignUp.jsx";
 import Login from "./pages/Login.jsx";
 import SubmitCommission from "./pages/SubmitCommission.jsx";
 import { useDispatch } from "react-redux";
-import { fetchUser } from "./store/slices/userSlice.js";
+import { fetchLeaderboard, fetchUser } from "./store/slices/userSlice.js";
 import HowItWorks from "./pages/HowItWorks.jsx";
 import About from "./pages/About.jsx";
+import { getAllAuctionItems } from "./store/slices/auctionSlice.js";
+import Leaderboard from "./pages/LeaderBoard.jsx";
+import Auction from "./pages/Auction.jsx";
+import AuctionItem from "./pages/AuctionItem.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUser());
+    dispatch(getAllAuctionItems())
+    dispatch(fetchLeaderboard())
   }, []);
   return (
     <Router>
@@ -26,6 +32,12 @@ const App = () => {
         <Route path="/sumbit-commission" element={<SubmitCommission />} />
         <Route path="/how-it-works" element = {<HowItWorks/>} />
         <Route path="/about-us" element = {<About/>} />
+        <Route path="/leaderboard" element = {<Leaderboard/>} />
+        <Route path="/auctions" element = {<Auction/>} />
+        <Route path="/auction/item/:id" element = {<AuctionItem/>} />
+
+
+
 
       </Routes>
       <ToastContainer position="top-right" />

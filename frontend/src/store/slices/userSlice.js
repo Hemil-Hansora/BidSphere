@@ -76,6 +76,21 @@ const userSlice = createSlice({
       state.leaderBoard = state.leaderBoard;
       state.loading = false;
     },
+
+    fetchLeaderboardRequest(state, action) {
+      state.loading = true;
+      state.leaderBoard = [];
+    },
+    fetchLeaderboardSuccess(state, action) {
+      state.loading = false;
+      
+      state.leaderBoard = action.payload;
+      console.log(action.payload)
+    },
+    fetchLeaderboardFailed(state, action) {
+      state.loading = false;
+      state.leaderBoard = [];
+    },
   },
 });
 
@@ -141,6 +156,27 @@ export const fetchUser = () => async (dispatch) => {
     console.error(error);
   } finally {
     dispatch(userSlice.actions.clearAllErrors());
+  }
+};
+
+export const fetchLeaderboard = () => async (dispatch) => {
+  dispatch(userSlice.actions.fetchLeaderboardRequest());
+  try {
+    const response = await axios.get(
+      `${server}/users/leaderboard`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response.data)
+    dispatch(
+      userSlice.actions.fetchLeaderboardSuccess(response.data.data)
+    );
+    dispatch(userSlice.actions.clearAllErrors());
+  } catch (error) {
+    dispatch(userSlice.actions.fetchLeaderboardFailed());
+    dispatch(userSlice.actions.clearAllErrors());
+    console.error(error);
   }
 };
 export default userSlice.reducer;

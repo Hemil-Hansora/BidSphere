@@ -121,7 +121,7 @@ function SignUp() {
                 >
                   <option value="">Select Role</option>
                   <option value="auctioneer">Auctioneer</option>
-                  <option value="User">User</option>
+                  <option value="user">User</option>
                 </select>
               </div>
               <div className="flex flex-col sm:flex-1">

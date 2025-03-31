@@ -6,6 +6,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.model.js";
 import { isValidObjectId } from "mongoose";
 import { Bid } from "../models/bid.model.js";
+import mongoose from "mongoose";
 
 const createAuction = asyncHandler(async (req, res) => {
   if (!req.file || Object.keys(req.file).length === 0) {
@@ -103,7 +104,7 @@ const getAllItems = asyncHandler(async (req, res) => {
   const auctions = await Auction.find({ endTime: { $gt: new Date() } })
     .populate("createdBy", "username email")
     .select(
-      "title description startingBid catagoery condition image createdAt"
+      "title description startingBid catagoery condition image createdAt startTime endTime"
     );
 
   console.log(auctions);
@@ -231,51 +232,60 @@ const getAuctionDetails = asyncHandler(async (req, res) => {
   if (!auctions) {
     throw new ApiError(400, "Auction not found");
   }
+
   const bidders = await Auction.aggregate([
     {
       $match: {
-        _id: auctions._id,
+        _id: new mongoose.Types.ObjectId(auctions._id),
       },
     },
     {
       $lookup: {
         from: "bids",
-        localField: "bids",
-        foreignField: "_id",
+        localField: "_id",
+        foreignField: "auctionItem", // Ensure correct foreign field
         as: "bids",
       },
     },
     {
-      $unwind: "$bids",
+      $unwind: {
+        path: "$bids",
+        preserveNullAndEmptyArrays: false, // Ensure only auctions with bids are considered
+      },
     },
     {
       $lookup: {
         from: "users",
         localField: "bids.bidder",
         foreignField: "_id",
-        as: "bids.bidder",
+        as: "bidderDetails",
       },
     },
     {
-      $unwind: "$bids.bidder",
+      $unwind: {
+        path: "$bidderDetails",
+        preserveNullAndEmptyArrays: false, // Ensure only bids with valid bidders are considered
+      },
     },
     {
       $project: {
         _id: 0,
-        amount: 1,
-        bidder: {
-          _id: 1,
-          username: 1,
-          email: 1,
-        },
+        username: "$bidderDetails.username",
+        email: "$bidderDetails.email",
+        profilePicture: "$bidderDetails.profilePicture",
+        amount: "$bids.amount",
       },
     },
     {
       $sort: {
-        amount: -1,
+        amount: -1, // Sort by highest bid amount
       },
     },
   ]);
+  
+  
+  
+
 
   if (!bidders) {
     throw new ApiError(400, "No bidders found");
