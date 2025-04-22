@@ -149,14 +149,7 @@ const SideDrawer = () => {
               </Link>
             </li>
 
-            <li>
-              <Link
-                to={"/about-us"}
-                className="flex text-xl font-semibold gap-2 items-center hover:text-[#d6482b] hover:transition-all hover:duration-150"
-              >
-                <BsFillInfoSquareFill /> About us
-              </Link>
-            </li>
+            
           </ul>
 
           <IoMdCloseCircleOutline
@@ -187,7 +180,7 @@ const SideDrawer = () => {
             Contact Us
           </Link>
           <p className="text-stone-500">&copy; BidSphare, LLC.</p>
-          <p className="text-stone-500">
+          {/* <p className="text-stone-500">
             Degined by{" "}
             <Link
               to={"/"}
@@ -195,7 +188,7 @@ const SideDrawer = () => {
             >
               Hemil
             </Link>
-          </p>
+          </p> */}
         </div>
       </div>
     </>

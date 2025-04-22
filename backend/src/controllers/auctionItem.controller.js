@@ -102,7 +102,7 @@ const createAuction = asyncHandler(async (req, res) => {
 });
 
 const getAllItems = asyncHandler(async (req, res) => {
-  const auctions = await Auction.find({ endTime: { $gt: new Date() } })
+  const auctions = await Auction.find()
     .populate("createdBy", "username email")
     .select(
       "title description startingBid catagoery condition image createdAt startTime endTime"

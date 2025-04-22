@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 const auctionSlice = createSlice({
   name: "auction",
   initialState: {
@@ -51,6 +50,39 @@ const auctionSlice = createSlice({
       state.auctionBidders = state.auctionBidders;
     },
 
+    getMyAuctionsRequest(state, action) {
+      state.loading = true;
+      state.myAuctions = [];
+    },
+    getMyAuctionsSuccess(state, action) {
+      state.loading = false;
+      state.myAuctions = action.payload;
+    },
+    getMyAuctionsFailed(state, action) {
+      state.loading = false;
+      state.myAuctions = [];
+    },
+
+    deleteAuctionItemRequest(state, action) {
+      state.loading = true;
+    },
+    deleteAuctionItemSuccess(state, action) {
+      state.loading = false;
+    },
+    deleteAuctionItemFailed(state, action) {
+      state.loading = false;
+    },
+
+    republishItemRequest(state, action) {
+      state.loading = true;
+    },
+    republishItemSuccess(state, action) {
+      state.loading = false;
+    },
+    republishItemFailed(state, action) {
+      state.loading = false;
+    },
+
     resetSlice(state, action) {
       state.loading = false;
       state.auctionDetail = state.auctionDetail;
@@ -67,7 +99,7 @@ export const getAllAuctionItems = () => async (dispatch) => {
     const response = await axios.get(`${server}/auction`, {
       withCredentials: true,
     });
-    console.log(typeof response.data);
+    console.log(  response.data);
     dispatch(auctionSlice.actions.getAllAuctionItemSuccess(response.data));
   } catch (error) {
     dispatch(auctionSlice.actions.getAllAuctionItemFailed());
@@ -95,7 +127,7 @@ export const getAuctionDetail = (id) => async (dispatch) => {
 export const createAuction = (data) => async (dispatch) => {
   dispatch(auctionSlice.actions.createAuctionRequest());
   try {
-    console.log(data)
+    console.log(data);
     const response = await axios.post(
       `${server}/auction/create-auction`,
       data,
@@ -111,6 +143,68 @@ export const createAuction = (data) => async (dispatch) => {
     dispatch(auctionSlice.actions.createAuctionFailed());
     toast.error(error.response.data.message);
   } finally {
+    dispatch(auctionSlice.actions.resetSlice());
+  }
+};
+
+export const getMyAuctionItems = () => async (dispatch) => {
+  dispatch(auctionSlice.actions.getMyAuctionsRequest());
+  try {
+    const response = await axios.get(`${server}/auction/items/my-items`, {
+      withCredentials: true,
+    });
+    console.log(response.data.data)
+    dispatch(auctionSlice.actions.getMyAuctionsSuccess(response.data.data));
+  } catch (error) {
+    dispatch(auctionSlice.actions.getMyAuctionsFailed());
+    console.error(error);
+  } finally {
+    dispatch(auctionSlice.actions.resetSlice());
+  }
+};
+
+export const republishAuction = (id, data) => async (dispatch) => {
+  dispatch(auctionSlice.actions.republishItemRequest());
+  try {
+    const response = await axios.put(
+      `${server}/auction/item/republish/${id}`,
+      data,
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    dispatch(auctionSlice.actions.republishItemSuccess());
+    toast.success(response.data.message);
+    dispatch(getMyAuctionItems());
+    dispatch(getAllAuctionItems());
+  } catch (error) {
+    dispatch(auctionSlice.actions.republishItemFailed());
+    toast.error(error.response.data.message);
+    console.error(error.response.data.message);
+  }finally{
+    dispatch(auctionSlice.actions.resetSlice());
+  }
+};
+
+export const deleteAuction = (id) => async (dispatch) => {
+  dispatch(auctionSlice.actions.deleteAuctionItemRequest());
+  try {
+    const response = await axios.delete(
+      `${server}/auction/delete/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch(auctionSlice.actions.deleteAuctionItemSuccess());
+    toast.success(response.data.message);
+    dispatch(getMyAuctionItems());
+    dispatch(getAllAuctionItems());
+  } catch (error) {
+    dispatch(auctionSlice.actions.deleteAuctionItemFailed());
+    toast.error(error.response.data.message);
+    console.error(error.response.data.message);
+  }finally{
     dispatch(auctionSlice.actions.resetSlice());
   }
 };

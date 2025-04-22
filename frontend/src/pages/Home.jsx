@@ -25,7 +25,7 @@ const Home = () => {
     <>
       <section className="w-full ml-0 m-0 h-fit px-5 pt-20 lg:pl-[320px] flex flex-col min-h-screen py-4 justify-center">
         <div>
-          <p className="text-[#DECCBE] font-bold text-xl mb-8">
+          <p className="text-[#d6482b] font-bold text-xl mb-8">
             Transparency Leads to Your Victory
           </p>
           <h1
