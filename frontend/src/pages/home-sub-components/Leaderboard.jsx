@@ -13,7 +13,7 @@ const Leaderboard = () => {
             Top 10
           </h3>
           <h3 className="text-[#D6482B] text-xl font-semibold mb-2 min-[480px]:text-xl md:text-2xl lg:text-3xl">
-            Bidders Leaderboard
+            Bidders Leaderboard 
           </h3>
         </div>
         <div className="overflow-x-auto">

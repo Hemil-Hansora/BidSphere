@@ -8,7 +8,7 @@ function SignUp() {
   const [username, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +29,7 @@ function SignUp() {
     formData.append("username", username);
     formData.append("fullName", fullName);
     formData.append("email", email);
-    formData.append("phone", phone);
+    formData.append("phoneNumber", phoneNumber);
     formData.append("address", address);
     formData.append("role", role);
     formData.append("password", password);
@@ -96,7 +96,7 @@ function SignUp() {
                 <label className="text-xl text-stone-600">Phone no. </label>
                 <input
                   type="number"
-                  value={phone}
+                  value={phoneNumber}
                   onChange={(e) => setPhone(e.target.value)}
                   className="text-xl py-2 bg-transparent border-b-2 border-b-stone-500 focus:outline-none  "
                 />
@@ -151,7 +151,7 @@ function SignUp() {
                     src={
                       profileImagePreview
                         ? profileImagePreview
-                        : "/imageHolder.jpg"
+                        : "../../public/user1.jpeg"
                     }
                     alt="profileImagePreview"
                     className="w-14 h-14 rounded-full"

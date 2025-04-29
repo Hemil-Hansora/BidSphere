@@ -16,7 +16,7 @@ const deleteAuctionItem = asyncHandler(async (req, res) => {
   if (!auction) {
     throw new ApiError(400, "Auction not found");
   }
-  if (auction.createdBy.toString() !== req.user._id.toString()) {
+  if (auction.createdBy.toString() !== req.user._id.toString() && req.user.role !=="admin") {
     throw new ApiError(403, "You are not authorized to delete this auction");
   }
   const deleted = await Auction.findByIdAndDelete(id);
@@ -29,7 +29,7 @@ const deleteAuctionItem = asyncHandler(async (req, res) => {
 });
 
 const getAllPaymentProofs = asyncHandler(async (req, res) => {
-  const paymentProof = await PaymentProof.find();
+  const paymentProof = await PaymentProof.find().populate('user', 'username email');
 
   return res
     .status(200)
@@ -45,7 +45,7 @@ const getPaymentDetail = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Please provide valid id");
   }
 
-  const paymentProofDetail = await PaymentProof.findById(id);
+  const paymentProofDetail = await PaymentProof.findById(id).populate('user', 'username email');
 
   return res
     .status(200)

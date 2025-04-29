@@ -179,13 +179,13 @@ const AuctionItem = () => {
         )
       ) : Date.now() < new Date(auctionDetail.startTime) ? (
         <img
-          src="/notStarted.png"
+          src="../../public/auctionstart.webp"
           alt="not-started"
           className="w-full max-h-[650px] object-cover rounded-lg shadow-md"
         />
       ) : (
         <img
-          src="/auctionEnded.png"
+          src="../../public/auctionend.png"
           alt="ended"
           className="w-full max-h-[650px] object-cover rounded-lg shadow-md"
         />

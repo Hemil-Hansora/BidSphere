@@ -17,6 +17,9 @@ import AuctionItem from "./pages/AuctionItem.jsx";
 import CreateAuction from "./pages/CreateAuction.jsx";
 import ViewMyAuctions from "./pages/ViewMyAuctions.jsx";
 import ViewAuctionDetails from "./pages/ViewAuctionDetails.jsx";
+import Dashboard from "./pages/dashboard/Dashboard.jsx";
+import Contact from "./pages/Contact.jsx";
+import UserProfile from "./pages/UserProfile.jsx";
 
 const App = () => {
    const dispatch = useDispatch();
@@ -41,6 +44,11 @@ const App = () => {
         <Route path="/create-auction" element = {<CreateAuction/>} />
         <Route path="/view-my-auction" element = {<ViewMyAuctions/>} />
         <Route path="/auction/details/:id" element = {<ViewAuctionDetails/>} />
+
+        <Route path="/dashboard" element = {<Dashboard/>}/>
+        <Route path="/contact" element = {<Contact/>}/>
+        <Route path="/me" element={<UserProfile />} />
+
 
 
       </Routes>

@@ -34,8 +34,9 @@ const superAdminSlice = createSlice({
     },
     successForAllUsers(state, action) {
       state.loading = false;
-      state.totalAuctioneers = action.payload.auctioneersArray;
-      state.totalBidders = action.payload.biddersArray;
+      console.log(action.payload)
+      state.totalAuctioneers = action.payload.data.auctioneersArray;
+      state.totalBidders = action.payload.data.userArray;
     },
     failureForAllUsers(state, action) {
       state.loading = false;
@@ -140,12 +141,13 @@ export const getAllPaymentProofs = () => async (dispatch) => {
   dispatch(superAdminSlice.actions.requestForPaymentProofs());
   try {
     const response = await axios.get(
-      `${server}/paymentproofs/getall`,
+      `${server}/admin/paymentproofs/getall`,
       { withCredentials: true }
     );
+    console.log(response.data.data)
     dispatch(
       superAdminSlice.actions.successForPaymentProofs(
-        response.data.paymentProofs
+        response.data.data
       )
     );
   } catch (error) {
@@ -178,9 +180,10 @@ export const getSinglePaymentProofDetail = (id) => async (dispatch) => {
       `${server}/admin/paymentproof/${id}`,
       { withCredentials: true }
     );
+    console.log(response.data.data)
     dispatch(
       superAdminSlice.actions.successForSinglePaymentProofDetail(
-        response.data.paymentProofDetail
+        response.data.data
       )
     );
   } catch (error) {

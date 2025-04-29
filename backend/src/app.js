@@ -2,6 +2,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
+import { endedAuctionCron } from "./automation/endedAuctionCron.js";
+import { verifyCommissionCron } from "./automation/verifyCommissionCron.js";
 
 const app = express();
 
@@ -30,6 +32,7 @@ app.use("/api/v1/bid", bidRouter);
 app.use('/api/v1/commission',commissionRouter);
 app.use("/api/v1/admin",adminRouter)
 
-
+endedAuctionCron();
+verifyCommissionCron();
 app.use(errorMiddleware);
 export { app };

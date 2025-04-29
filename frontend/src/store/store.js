@@ -3,6 +3,8 @@ import  useReducer from "./slices/userSlice.js";
 import commissionReducer from './slices/commissionSlice.js'
 import auctionReducer from './slices/auctionSlice.js'
 import bidReducer from './slices/bidSlice.js'
+import adminReducer from './slices/adminSlice.js'
+
 
 export const store = configureStore({
     reducer : {
@@ -10,5 +12,6 @@ export const store = configureStore({
         commission : commissionReducer,
         auction : auctionReducer,
         bid : bidReducer,
+        admin : adminReducer
     }
 })

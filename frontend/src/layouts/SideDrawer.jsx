@@ -12,17 +12,19 @@ import { FaFileInvoiceDollar } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/store/slices/userSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SideDrawer = () => {
   const [show, setShow] = useState(false);
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const dispatch = useDispatch(logout);
+  const nevigate = useNavigate()
 
 
 
   const handleLogout = () => {  
     dispatch(logout());
+    nevigate("/")
   };
 
   return (
@@ -140,6 +142,16 @@ const SideDrawer = () => {
           <hr className="mb-4 border-t-[#d6482b]" />
 
           <ul className="flex flex-col gap-3">
+          {isAuthenticated && (
+              <li>
+                <Link
+                  to={"/me"}
+                  className="flex text-xl font-semibold gap-2 items-center hover:text-[#D6482b] hover:transition-all hover:duration-150"
+                >
+                  <FaUserCircle /> Profile
+                </Link>
+              </li>
+            )}
             <li>
               <Link
                 to={"/how-it-works"}

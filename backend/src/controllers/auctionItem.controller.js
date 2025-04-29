@@ -134,7 +134,8 @@ const removeFromAuction = asyncHandler(async (req, res) => {
   if (!auction) {
     throw new ApiError(400, "Auction not found");
   }
-  if (auction.createdBy.toString() !== req.user._id.toString()) {
+  console.log(req.user.role)
+  if (auction.createdBy.toString() !== req.user._id.toString() && req.user.role!=="admin") {
     throw new ApiError(403, "You are not authorized to delete this auction");
   }
   const deleted = await Auction.findByIdAndDelete(id);
