@@ -112,9 +112,11 @@ export const getMonthlyRevenue = () => async (dispatch) => {
       `${server}/admin/monthlyincome`,
       { withCredentials: true }
     );
+    console.log("monthly rev")
+    console.log(response.data)
     dispatch(
       superAdminSlice.actions.successForMonthlyRevenue(
-        response.data.totalMonthlyRevenue
+        response.data.data
       )
     );
   } catch (error) {

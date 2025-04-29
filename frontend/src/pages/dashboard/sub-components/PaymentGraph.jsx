@@ -23,6 +23,8 @@ ChartJS.register(
 const PaymentGraph = () => {
   const { monthlyRevenue = [] } = useSelector((state) => state.admin);
 
+  console.log(monthlyRevenue)
+
   const labels = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
